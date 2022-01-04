@@ -13,6 +13,7 @@ function Canvas() {
         // should be executed once e.g. before drawing
         const image = context.createImageData(canvas.width, canvas.height)
         const { data } = image
+        console.log(image)
 
         function drawPixel(x, y, color) {
             const roundedX = Math.round(x)
@@ -38,7 +39,7 @@ function Canvas() {
 
         const t1 = new Date()
 
-        for (let i = 0; i < 10000; i += 1) {
+        for (let i = 0; i < 1000; i += 1) {
             const x = canvas.width * Math.random()
             const y = canvas.height * Math.random()
             const color = colors[i % colors.length]
@@ -59,6 +60,8 @@ function Canvas() {
             <canvas
                 ref={CanvasRef}
                 className="border-2 mx-auto border-gray-500"
+                width="300"
+                height="300"
             />
         </div>
     )
