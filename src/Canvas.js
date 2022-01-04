@@ -6,40 +6,52 @@ function Canvas() {
     const CanvasRef = useRef(null)
 
     useEffect(() => {
-        const draw = (ctx, frameCount) => {
-            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-            ctx.fillStyle = '#000000'
-            ctx.beginPath()
-            ctx.arc(
-                50,
-                100,
-                20 * Math.sin(frameCount * 0.05) ** 2,
-                0,
-                2 * Math.PI,
-            )
-            ctx.fill()
-        }
         const canvas = CanvasRef.current
         const context = canvas.getContext('2d')
 
-        let frameCount = 0
-        let animationFrameId
+        // to increase performance createImageData method
+        // should be executed once e.g. before drawing
+        const image = context.createImageData(canvas.width, canvas.height)
+        const { data } = image
 
-        // Our draw came here
-        const render = () => {
-            // counter
-            frameCount += 1
-            // takes frame counter is the radius of the circle
-            draw(context, frameCount)
-            // Reqursive call
-            animationFrameId = window.requestAnimationFrame(render)
-        }
-        render()
+        function drawPixel(x, y, color) {
+            const roundedX = Math.round(x)
+            const roundedY = Math.round(y)
 
-        return () => {
-            // cancle animation after canvas component is unmounted
-            window.cancelAnimationFrame(animationFrameId)
+            const index = 4 * (canvas.width * roundedY + roundedX)
+
+            data[index + 0] = color.r
+            data[index + 1] = color.g
+            data[index + 2] = color.b
+            data[index + 3] = color.a
         }
+
+        function swapBuffer() {
+            context.putImageData(image, 0, 0)
+        }
+
+        const colors = [
+            { r: 255, g: 0, b: 0, a: 255 }, // red
+            { r: 0, g: 255, b: 0, a: 255 }, // green
+            { r: 0, g: 0, b: 255, a: 255 }, // blue
+        ]
+
+        const t1 = new Date()
+
+        for (let i = 0; i < 10000; i += 1) {
+            const x = canvas.width * Math.random()
+            const y = canvas.height * Math.random()
+            const color = colors[i % colors.length]
+
+            drawPixel(x, y, color)
+        }
+
+        swapBuffer()
+
+        const t2 = new Date()
+        const dt = t2 - t1
+
+        console.log(`elapsed time = ${dt} ms`)
     }, [])
 
     return (
