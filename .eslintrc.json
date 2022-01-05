@@ -26,6 +26,7 @@
         "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "warn",
         "no-console": 0,
+        "no-lone-blocks": 0,
         "no-unused-vars": 0,
         "camelcase": "off",
         "@typescript-eslint/camelcase": ["off"]

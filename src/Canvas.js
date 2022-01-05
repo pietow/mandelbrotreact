@@ -37,7 +37,16 @@ function Canvas() {
         for (let x = 0; x < canvas.width; x += 1) {
             for (let y = 0; y < canvas.height; y += 1) {
                 /* const color = colors[0] */
-                const color = mandelbrot(x, y)
+                const color = mandelbrot(
+                    x,
+                    y,
+                    1,
+                    -2,
+                    1,
+                    -1,
+                    canvas.width,
+                    canvas.height,
+                )
                 drawPixel(x, y, color)
             }
         }
@@ -54,9 +63,9 @@ function Canvas() {
         <div className="flex items-center h-screen">
             <canvas
                 ref={CanvasRef}
-                className=" mx-auto border-gray-500"
-                width="300"
-                height="200"
+                className="border-2 mx-auto border-gray-500"
+                width="600"
+                height="400"
             />
         </div>
     )

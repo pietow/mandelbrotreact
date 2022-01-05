@@ -1,23 +1,28 @@
 /** @format */
 
-function mandelbrot(x, y) {
-    const c_re = -2 + x / 100
-    const c_im = -1 + y / 100
+function mandelbrot(x, y, xMax, xMin, yMax, yMin, width, height) {
+    const x0 = xMin + (x * (xMax - xMin)) / width
+    const y0 = yMin + (y * (yMax - yMin)) / height
     const black = { r: 0, g: 0, b: 0, a: 255 }
     const white = { r: 0, g: 0, b: 0, a: 0 }
-    const iterArr = []
-    let temp_re = c_re
-    let temp_im = c_im
-    iterArr.push(temp_re ** 2 + temp_im)
+    const red = { r: 255, g: 0, b: 0, a: 255 }
 
-    for (let i = 0; i < 10; i += 1) {
-        temp_re = temp_re ** 2 - temp_im ** 2 + c_re
-        temp_im = 2 * temp_im * temp_re + c_im
-        iterArr.push(temp_re ** 2 + temp_im)
+    if (x0 === 0) return red
+    if (y0 === 0) return red
+
+    let r = x0
+    let i = y0
+
+    for (let n = 0; n < 10000; n += 1) {
+        const rr = r * r
+        const ii = i * i
+        if (rr + ii > 4) {
+            return white
+        }
+        i = 2 * r * i + y0
+        r = rr + ii + x0
     }
-    if (iterArr.slice(-1) >= 4) {
-        return white
-    }
+
     return black
 }
 
