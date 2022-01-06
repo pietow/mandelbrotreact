@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef } from 'react'
 import mandelbrot from './mandelbrot'
+import convertPxToComplex from './converter'
 
 function Canvas() {
     const CanvasRef = useRef(null)
@@ -17,8 +18,8 @@ function Canvas() {
         console.log(image)
 
         function drawPixel(x, y, color) {
-            const roundedX = Math.round(x)
-            const roundedY = Math.round(y)
+            const roundedX = x
+            const roundedY = y
 
             const index = 4 * (canvas.width * roundedY + roundedX)
 
@@ -35,22 +36,19 @@ function Canvas() {
         const t1 = new Date()
 
         for (let x = 0; x < canvas.width; x += 1) {
+            /* console.log(x + 1) */
             for (let y = 0; y < canvas.height; y += 1) {
-                /* const color = colors[0] */
-                const color = mandelbrot(
-                    x,
-                    y,
-                    1,
-                    -2,
-                    1,
-                    -1,
-                    canvas.width,
-                    canvas.height,
-                )
-                drawPixel(x, y, color)
+                if (x === 0 && y === 199) {
+                    drawPixel(x, y, { r: 255, g: 0, b: 0, a: 255 })
+                } else {
+                    drawPixel(x, y, { r: 0, g: 0, b: 0, a: 255 })
+                }
             }
         }
 
+        convertPxToComplex(299, 199, -2, 1, -1, 1, canvas.width, canvas.height)
+        mandelbrot(0, 1)
+        /* console.log(color) */
         swapBuffer()
 
         const t2 = new Date()
@@ -64,8 +62,8 @@ function Canvas() {
             <canvas
                 ref={CanvasRef}
                 className="border-2 mx-auto border-gray-500"
-                width="600"
-                height="400"
+                width="300"
+                height="200"
             />
         </div>
     )
