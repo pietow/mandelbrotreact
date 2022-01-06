@@ -1,11 +1,16 @@
 /** @format */
 
 import React, { useEffect, useRef } from 'react'
-import mandelbrot from './mandelbrot'
 import convertPxToComplex from './converter'
+import mandelbrot from './mandelbrot'
+import getPerPixel from './getPerPixel'
 
 function Canvas() {
     const CanvasRef = useRef(null)
+    const xMin = -2
+    const xMax = 1
+    const yMin = -1
+    const yMax = 1
 
     useEffect(() => {
         const canvas = CanvasRef.current
@@ -35,17 +40,27 @@ function Canvas() {
 
         const t1 = new Date()
 
+        const perPixel = getPerPixel(
+            xMin,
+            xMax,
+            yMin,
+            yMax,
+            canvas.width,
+            canvas.height,
+        )
+        console.log(perPixel)
         for (let x = 0; x < canvas.width; x += 1) {
             for (let y = 0; y < canvas.height; y += 1) {
                 const [Cr, Ci] = convertPxToComplex(
                     x,
                     y,
-                    -2,
-                    1,
-                    -1,
-                    1,
+                    xMin,
+                    xMax,
+                    yMin,
+                    yMax,
                     canvas.width,
                     canvas.height,
+                    perPixel,
                 )
                 const color = mandelbrot(Cr, Ci)
                 drawPixel(x, y, color)
@@ -58,15 +73,15 @@ function Canvas() {
         const dt = t2 - t1
 
         console.log(`elapsed time = ${dt} ms`)
-    }, [])
+    })
 
     return (
         <div className="flex items-center h-screen">
             <canvas
                 ref={CanvasRef}
                 className="border-2 mx-auto border-gray-500"
-                width="1200"
-                height="800"
+                width="3000"
+                height="200"
             />
         </div>
     )
