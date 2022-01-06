@@ -1,12 +1,11 @@
 /** @format */
 
-function mandelbrot(Cr, Ci) {
+function mandelbrot(Cr, Ci, iterMax) {
     let Zi = 0
     let Zr = 0
     let Ti = 0
     let Tr = 0
     let n = 0
-    const iterMax = 18
 
     for (; n < iterMax && Tr + Ti <= 4; n += 1) {
         Zi = 2 * Zi * Zr + Ci

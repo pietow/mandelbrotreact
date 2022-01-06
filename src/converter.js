@@ -1,8 +1,20 @@
 /** @format */
 
-function convertPxToComplex(x, y, xMin, xMax, yMin, yMax, width, height) {
-    const Zi = yMax - ((yMax - yMin) * y) / (height) // pixel starts at upper left corner --> for yPixel = 0 we start at yMin
-    const Zr = xMin + ((xMax - xMin) * x) / (width) // left corner  --> for xPixel = 0 we start at xMin
+function convertPxToComplex(
+    x,
+    y,
+    xMin,
+    xMax,
+    yMin,
+    yMax,
+    width,
+    height,
+    perPixel,
+) {
+    const middleX = (width * perPixel - (xMax - xMin)) / 2 // center Mandelbrot in canvas ---> shift by middelX
+    const middleY = (height * perPixel - (yMax - yMin)) / 2 // center Mandelbrot in canvas ---> shift by middelY on y axis
+    const Zi = yMax - perPixel * y + middleY
+    const Zr = xMin + perPixel * x - middleX
     return [Zr, Zi]
     /* console.log('x:', x, 'Re:', Zr) */
     /* console.log('y:', y, 'Im:', Zi) */

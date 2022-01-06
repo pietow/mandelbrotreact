@@ -7,10 +7,11 @@ import getPerPixel from './getPerPixel'
 
 function Canvas() {
     const CanvasRef = useRef(null)
-    const xMin = -2
-    const xMax = 1
-    const yMin = -1
-    const yMax = 1
+    const xMin = 0.3
+    const xMax = 0.3
+    const yMin = -0.09
+    const yMax = 0.09
+    const iterMax = 10000
 
     useEffect(() => {
         const canvas = CanvasRef.current
@@ -62,7 +63,7 @@ function Canvas() {
                     canvas.height,
                     perPixel,
                 )
-                const color = mandelbrot(Cr, Ci)
+                const color = mandelbrot(Cr, Ci, iterMax)
                 drawPixel(x, y, color)
             }
         }
@@ -80,8 +81,8 @@ function Canvas() {
             <canvas
                 ref={CanvasRef}
                 className="border-2 mx-auto border-gray-500"
-                width="3000"
-                height="200"
+                width="800"
+                height="800"
             />
         </div>
     )
