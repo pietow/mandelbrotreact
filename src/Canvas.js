@@ -36,19 +36,22 @@ function Canvas() {
         const t1 = new Date()
 
         for (let x = 0; x < canvas.width; x += 1) {
-            /* console.log(x + 1) */
             for (let y = 0; y < canvas.height; y += 1) {
-                if (x === 0 && y === 199) {
-                    drawPixel(x, y, { r: 255, g: 0, b: 0, a: 255 })
-                } else {
-                    drawPixel(x, y, { r: 0, g: 0, b: 0, a: 255 })
-                }
+                const [Cr, Ci] = convertPxToComplex(
+                    x,
+                    y,
+                    -2,
+                    1,
+                    -1,
+                    1,
+                    canvas.width,
+                    canvas.height,
+                )
+                const color = mandelbrot(Cr, Ci)
+                drawPixel(x, y, color)
             }
         }
 
-        convertPxToComplex(299, 199, -2, 1, -1, 1, canvas.width, canvas.height)
-        mandelbrot(0, 1)
-        /* console.log(color) */
         swapBuffer()
 
         const t2 = new Date()
@@ -62,8 +65,8 @@ function Canvas() {
             <canvas
                 ref={CanvasRef}
                 className="border-2 mx-auto border-gray-500"
-                width="300"
-                height="200"
+                width="1200"
+                height="800"
             />
         </div>
     )
