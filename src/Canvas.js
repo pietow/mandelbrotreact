@@ -19,18 +19,12 @@ function Canvas() {
         const canvas = CanvasRef.current
         const context = canvas.getContext('2d')
 
-        // to increase performance createImageData method
-        // should be executed once e.g. before drawing
         const image = context.createImageData(canvas.width, canvas.height)
         const { data } = image
-        /* console.log(image) */
 
         function drawPixel(x, y, color) {
             const index = 4 * (canvas.width * y + x)
             let offset = 0
-            /* console.log(color) */
-            /* console.log(x, y) */
-            /* console.log(color) */
 
             data[index + offset++] = color.r
             data[index + offset++] = color.g
@@ -52,7 +46,6 @@ function Canvas() {
             canvas.width,
             canvas.height,
         )
-        /* const iterations = new Uint32Array(canvas.width * canvas.height) // Array buffer is an array of bytes */
         const iterations = []
         let count = 0
         for (let x = 0; x < canvas.width; x += 1) {
@@ -74,15 +67,9 @@ function Canvas() {
                 count += 1
                 if (n > max) max = n
                 if (n < min) min = n
-                drawPixel(x, y, color)
             }
         }
-        /* console.log(Math.min(...iterations)) */
         const colorTable = []
-        /* if (!colorTable || colorTable.length !== iterMax + 1) { */
-        /*     colorTable = new Uint32Array(iterMax + 1) */
-        /*     colorTable = [] */
-        /* } */
 
         const maxlog = Math.log(1 + max - min)
         for (let i = min; i <= max; i++) {
@@ -98,12 +85,9 @@ function Canvas() {
         for (let i = 0; i < iterations.length; i++) {
             iterations[i] = colorTable[iterations[i]]
         }
-        console.log(iterations[0])
         count = 0
-        console.log('second draw')
         for (let x = 0; x < canvas.width; x += 1) {
             for (let y = 0; y < canvas.height; y += 1) {
-                /* console.log(iterations) */
                 drawPixel(x, y, iterations[count])
                 count += 1
             }
@@ -115,8 +99,6 @@ function Canvas() {
         const dt = t2 - t1
 
         console.log(`elapsed time = ${dt} ms`)
-        /* console.log('min', min) */
-        /* console.log('max', max) */
     })
 
     return (
