@@ -14,8 +14,8 @@ function mandelbrot(Cr, Ci, iterMax) {
         Ti = Zi * Zi
     }
 
-    if (Tr + Ti <= 4) return { r: 0, g: 0, b: 0, a: 255 }
-    return { r: 0, g: 0, b: 0, a: 0 }
+    if (Tr + Ti <= 4) return { r: 0, g: 0, b: 0, a: 255, n }
+    return { r: 0, g: 0, b: 0, a: 0, n }
 }
 
 export default mandelbrot

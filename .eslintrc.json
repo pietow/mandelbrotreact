@@ -28,6 +28,7 @@
         "no-console": 0,
         "no-lone-blocks": 0,
         "no-unused-vars": 0,
+        "no-plusplus": 0,
         "camelcase": "off",
         "@typescript-eslint/camelcase": ["off"]
     }
