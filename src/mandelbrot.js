@@ -1,6 +1,20 @@
 /** @format */
+import getPerPixel from './getPerPixel'
+import convertPxToComplex from './converter'
 
-function mandelbrot(Cr, Ci, iterMax) {
+function mandelbrot(x, y, xMin, xMax, yMin, yMax, width, height, iterMax) {
+    const perPixel = getPerPixel(xMin, xMax, yMin, yMax, width, height)
+    const [Cr, Ci] = convertPxToComplex(
+        x,
+        y,
+        xMin,
+        xMax,
+        yMin,
+        yMax,
+        width,
+        height,
+        perPixel,
+    )
     let Zi = 0
     let Zr = 0
     let Ti = 0

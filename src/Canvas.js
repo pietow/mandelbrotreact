@@ -38,19 +38,11 @@ function Canvas() {
 
         const t1 = new Date()
 
-        const perPixel = getPerPixel(
-            xMin,
-            xMax,
-            yMin,
-            yMax,
-            canvas.width,
-            canvas.height,
-        )
         const iterations = []
         let count = 0
         for (let x = 0; x < canvas.width; x += 1) {
             for (let y = 0; y < canvas.height; y += 1) {
-                const [Cr, Ci] = convertPxToComplex(
+                const color = mandelbrot(
                     x,
                     y,
                     xMin,
@@ -59,9 +51,8 @@ function Canvas() {
                     yMax,
                     canvas.width,
                     canvas.height,
-                    perPixel,
+                    iterMax,
                 )
-                const color = mandelbrot(Cr, Ci, iterMax)
                 const { n } = color
                 iterations[count] = n
                 count += 1
@@ -76,8 +67,8 @@ function Canvas() {
             const byteNum = Math.ceil((Math.log(1 + i - min) / maxlog) * 255)
             colorTable.push({
                 r: 0,
-                g: 0,
-                b: 0,
+                g: byteNum,
+                b: byteNum,
                 a: byteNum,
             })
         }
