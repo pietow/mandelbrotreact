@@ -14,8 +14,6 @@ function Canvas() {
 
     useEffect(() => {
         const iterMax = 100
-        let max = 0
-        let min = iterMax
         const canvas = CanvasRef.current
         const context = canvas.getContext('2d')
 
@@ -26,10 +24,10 @@ function Canvas() {
             const index = 4 * (canvas.width * y + x)
             let offset = 0
 
-            data[index + offset++] = color.r
-            data[index + offset++] = color.g
-            data[index + offset++] = color.b
-            data[index + offset] = color.a
+            data[index + offset++] = 0
+            data[index + offset++] = 0
+            data[index + offset++] = 0
+            data[index + offset] = color
         }
 
         function swapBuffer() {
@@ -38,28 +36,17 @@ function Canvas() {
 
         const t1 = new Date()
 
-        const iterations = []
-        let count = 0
-        for (let x = 0; x < canvas.width; x += 1) {
-            for (let y = 0; y < canvas.height; y += 1) {
-                const color = mandelbrot(
-                    x,
-                    y,
-                    xMin,
-                    xMax,
-                    yMin,
-                    yMax,
-                    canvas.width,
-                    canvas.height,
-                    iterMax,
-                )
-                const { n } = color
-                iterations[count] = n
-                count += 1
-                if (n > max) max = n
-                if (n < min) min = n
-            }
-        }
+        let index = 0
+        const mandelObj = mandelbrot(
+            xMin,
+            xMax,
+            yMin,
+            yMax,
+            canvas.width,
+            canvas.height,
+            iterMax,
+        )
+        const { iterations, min, max } = mandelObj
         const colorTable = []
 
         const maxlog = Math.log(1 + max - min)
@@ -67,20 +54,19 @@ function Canvas() {
             const byteNum = Math.ceil((Math.log(1 + i - min) / maxlog) * 255)
             colorTable.push({
                 r: 0,
-                g: byteNum,
-                b: byteNum,
+                g: 0,
+                b: 0,
                 a: byteNum,
             })
         }
         colorTable.push({ r: 0, g: 0, b: 0, a: 0 })
         for (let i = 0; i < iterations.length; i++) {
-            iterations[i] = colorTable[iterations[i]]
+            iterations[i] = colorTable[iterations[i]].a
         }
-        count = 0
+        index = 0
         for (let x = 0; x < canvas.width; x += 1) {
             for (let y = 0; y < canvas.height; y += 1) {
-                drawPixel(x, y, iterations[count])
-                count += 1
+                drawPixel(x, y, iterations[index++])
             }
         }
 
