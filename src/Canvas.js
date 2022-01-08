@@ -1,9 +1,9 @@
 /** @format */
 
 import React, { useEffect, useRef } from 'react'
-import convertPxToComplex from './converter'
 import mandelbrot from './mandelbrot'
-import getPerPixel from './getPerPixel'
+import genColor from './genColor'
+import drawPixel from './drawPixel'
 
 function Canvas() {
     const CanvasRef = useRef(null)
@@ -20,23 +20,12 @@ function Canvas() {
         const image = context.createImageData(canvas.width, canvas.height)
         const { data } = image
 
-        function drawPixel(x, y, color) {
-            const index = 4 * (canvas.width * y + x)
-            let offset = 0
-
-            data[index + offset++] = 0
-            data[index + offset++] = 0
-            data[index + offset++] = 0
-            data[index + offset] = color
-        }
-
         function swapBuffer() {
             context.putImageData(image, 0, 0)
         }
 
         const t1 = new Date()
 
-        let index = 0
         const mandelObj = mandelbrot(
             xMin,
             xMax,
@@ -46,27 +35,20 @@ function Canvas() {
             canvas.height,
             iterMax,
         )
-        const { iterations, min, max } = mandelObj
-        const colorTable = []
-
-        const maxlog = Math.log(1 + max - min)
-        for (let i = min; i <= max; i++) {
-            const byteNum = Math.ceil((Math.log(1 + i - min) / maxlog) * 255)
-            colorTable.push({
-                r: 0,
-                g: 0,
-                b: 0,
-                a: byteNum,
-            })
-        }
-        colorTable.push({ r: 0, g: 0, b: 0, a: 0 })
-        for (let i = 0; i < iterations.length; i++) {
-            iterations[i] = colorTable[iterations[i]].a
-        }
-        index = 0
+        const { iterations, radiusZn, min, max, maxRad, minRad } = mandelObj
+        const colorTable = genColor(min, max)
+        colorTable[100] = { r: 0, b: 0, g: 0, a: 255 }
+        let index = 0
         for (let x = 0; x < canvas.width; x += 1) {
             for (let y = 0; y < canvas.height; y += 1) {
-                drawPixel(x, y, iterations[index++])
+                drawPixel(
+                    x,
+                    y,
+                    iterations[index++],
+                    colorTable,
+                    data,
+                    canvas.width,
+                )
             }
         }
 
