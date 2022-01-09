@@ -1,19 +1,17 @@
 /** @format */
 
 import React, { useEffect, useRef } from 'react'
+import PropTypes from 'prop-types'
 import mandelbrot from './mandelbrot'
 import genColor from './genColor'
 import drawPixel from './drawPixel'
 
-function Canvas() {
+function Canvas({ state }) {
     const CanvasRef = useRef(null)
-    const xMin = -2
-    const xMax = 1
-    const yMin = -1
-    const yMax = 1
+    const { width, height } = state
 
     useEffect(() => {
-        const iterMax = 100
+        const { xMin, xMax, yMin, yMax, iterMax } = state
         const canvas = CanvasRef.current
         const context = canvas.getContext('2d')
 
@@ -35,7 +33,8 @@ function Canvas() {
             canvas.height,
             iterMax,
         )
-        const { iterations, radiusZn, min, max, maxRad, minRad } = mandelObj
+        console.log(state)
+        const { iterations, min, max } = mandelObj
         const colorTable = genColor(min, max)
         colorTable[100] = { r: 0, b: 0, g: 0, a: 255 }
         let index = 0
@@ -65,11 +64,15 @@ function Canvas() {
             <canvas
                 ref={CanvasRef}
                 className=" border-gray-500"
-                width="1000"
-                height="1000"
+                width={width}
+                height={height}
             />
         </div>
     )
+}
+
+Canvas.propTypes = {
+    state: PropTypes.objectOf(PropTypes.number).isRequired,
 }
 
 export default Canvas

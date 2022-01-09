@@ -6,15 +6,15 @@ export const initialState = {
     yMin: -1,
     yMax: 1,
     iterMax: 100,
-    widht: 1000,
+    width: 1000,
     height: 1000,
-    in_xMin: 0,
-    in_xMax: 0,
-    in_yMin: 0,
-    in_yMax: 0,
-    in_iterMax: 0,
-    in_widht: 0,
-    in_height: 0,
+    in_xMin: -2,
+    in_xMax: 1,
+    in_yMin: 1,
+    in_yMax: -1,
+    in_iterMax: 100,
+    in_width: 1000,
+    in_height: 1000,
 }
 export function paraReducer(state, action) {
     switch (action.type) {
@@ -31,7 +31,7 @@ export function paraReducer(state, action) {
             return { ...state, yMax: state.in_yMax }
         }
         case 'set_iterMax': {
-            return { ...state, iter: state.in_iter }
+            return { ...state, iter: state.in_iterMax }
         }
         case 'set_width': {
             return { ...state, width: state.in_width }
@@ -40,25 +40,43 @@ export function paraReducer(state, action) {
             return { ...state, height: state.in_height }
         }
         case 'set_in_xMin': {
-            return { ...state, in_xMin: state.in_xMin }
+            return { ...state, in_xMin: action.input }
         }
         case 'set_in_xMax': {
-            return { ...state, in_xMax: state.in_xMin }
+            return { ...state, in_xMax: action.input }
         }
         case 'set_in_yMin': {
-            return { ...state, in_yMin: state.in_yMin }
+            return { ...state, in_yMin: action.input }
         }
         case 'set_in_yMax': {
-            return { ...state, in_yMax: state.in_yMax }
+            return { ...state, in_yMax: action.input }
         }
         case 'set_in_iterMax': {
-            return { ...state, in_iter: state.in_iter }
+            return { ...state, in_iterMax: action.input }
         }
         case 'set_in_width': {
-            return { ...state, in_width: state.in_width }
+            return { ...state, in_width: action.input }
         }
         case 'set_in_height': {
-            return { ...state, in_height: state.in_height }
+            return { ...state, in_height: action.input }
+        }
+        case 'set_all_parameters': {
+            return {
+                xMin: state.in_xMin,
+                xMax: state.in_xMax,
+                yMin: state.in_yMin,
+                yMax: state.in_yMax,
+                iterMax: state.in_iterMax,
+                width: state.in_width,
+                height: state.in_height,
+                in_xMin: state.in_xMin,
+                in_xMax: state.in_xMax,
+                in_yMin: state.in_yMin,
+                in_yMax: state.in_yMax,
+                in_iterMax: state.in_iterMax,
+                in_width: state.in_width,
+                in_height: state.in_height,
+            }
         }
         default: {
             throw Error(`Unkown action: ${action.type}`)
