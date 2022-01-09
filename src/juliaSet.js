@@ -31,8 +31,8 @@ function juliaSet(xMin, xMax, yMin, yMax, width, height, iterMax) {
             let n = 0
 
             for (; n < iterMax && Tr + Ti <= 4; n += 1) {
-                Zi = 2 * Zi * Zr + 0.148
-                Zr = Tr - Ti - 0.744
+                Zi = 2 * Zi * Zr + 0.745
+                Zr = Tr - Ti - 1.23
                 Tr = Zr * Zr
                 Ti = Zi * Zi
             }

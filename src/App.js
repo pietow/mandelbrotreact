@@ -11,7 +11,7 @@ function App() {
     const [state, dispatch] = useReducer(paraReducer, initialState)
     return (
         <div className="App">
-            <JuliaCanvas state={state} dispatch={dispatch} />
+            <Canvas state={state} dispatch={dispatch} />
             <Panel state={state} dispatch={dispatch} />
         </div>
     )

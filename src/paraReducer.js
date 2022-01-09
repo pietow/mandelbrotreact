@@ -1,4 +1,6 @@
 /** @format */
+import getPerPixel from './getPerPixel'
+import convertPxToComplex from './converter'
 
 export const initialState = {
     xMin: -2,
@@ -15,6 +17,7 @@ export const initialState = {
     in_iterMax: 100,
     in_width: 1000,
     in_height: 1000,
+    perPixel: 0,
 }
 export function paraReducer(state, action) {
     switch (action.type) {
@@ -61,6 +64,8 @@ export function paraReducer(state, action) {
             return { ...state, in_height: action.input }
         }
         case 'set_all_parameters': {
+            const { in_xMin, in_xMax, in_yMin, in_yMax, in_width, in_height } =
+                state
             return {
                 xMin: state.in_xMin,
                 xMax: state.in_xMax,
@@ -76,6 +81,41 @@ export function paraReducer(state, action) {
                 in_iterMax: state.in_iterMax,
                 in_width: state.in_width,
                 in_height: state.in_height,
+                perPixel: getPerPixel(
+                    in_xMin,
+                    in_xMax,
+                    in_yMin,
+                    in_yMax,
+                    in_width,
+                    in_height,
+                ),
+            }
+        }
+        case 'get_per_Pixel': {
+            const { xMin, xMax, yMin, yMax, width, height } = state
+            return {
+                ...state,
+                perPixel: getPerPixel(xMin, xMax, yMin, yMax, width, height),
+            }
+        }
+        case 'get_coordinates': {
+            const { xMin, xMax, yMin, yMax, width, height, perPixel } = state
+
+            const [Zr, Zi] = convertPxToComplex(
+                action.x,
+                action.y,
+                xMin,
+                xMax,
+                yMin,
+                yMax,
+                width,
+                height,
+                perPixel,
+            )
+            return {
+                ...state,
+                Zr,
+                Zi,
             }
         }
         default: {

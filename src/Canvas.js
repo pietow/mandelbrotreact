@@ -5,13 +5,14 @@ import PropTypes from 'prop-types'
 import mandelbrot from './mandelbrot'
 import genColor from './genColor'
 import drawPixel from './drawPixel'
+import convertPxToComplex from './converter'
 
-function Canvas({ state }) {
+function Canvas({ state, dispatch }) {
     const CanvasRef = useRef(null)
-    const { width, height } = state
+    const { width, height, xMin, xMax, yMin, yMax, iterMax, perPixel } = state
 
     useEffect(() => {
-        const { xMin, xMax, yMin, yMax, iterMax } = state
+        /* const { xMin, xMax, yMin, yMax, iterMax } = state */
         const canvas = CanvasRef.current
         const context = canvas.getContext('2d')
 
@@ -33,7 +34,6 @@ function Canvas({ state }) {
             canvas.height,
             iterMax,
         )
-        console.log(state)
         const { iterations, min, max } = mandelObj
         const colorTable = genColor(min, max)
         colorTable[100] = { r: 0, b: 0, g: 0, a: 255 }
@@ -57,15 +57,30 @@ function Canvas({ state }) {
         const dt = t2 - t1
 
         console.log(`elapsed time = ${dt} ms`)
-    })
+    }, [xMin, xMax, yMin, yMax, iterMax])
 
     return (
-        <div className="border-2">
+        <div className="w-fit border-black relative">
+            <p className="text-matrix-green absolute top-2 inset-x-2/4 w-1/2">
+                {state.Zr
+                    ? `${state.Zr.toFixed(5)} + i * ${state.Zi.toFixed(5)}`
+                    : 'Move cursor over canvas'}
+            </p>
             <canvas
                 ref={CanvasRef}
                 className=" border-gray-500"
                 width={width}
                 height={height}
+                onMouseMove={(e) => {
+                    dispatch({
+                        type: 'get_per_Pixel',
+                    })
+                    dispatch({
+                        type: 'get_coordinates',
+                        x: e.clientX,
+                        y: e.clientY,
+                    })
+                }}
             />
         </div>
     )
@@ -73,6 +88,7 @@ function Canvas({ state }) {
 
 Canvas.propTypes = {
     state: PropTypes.objectOf(PropTypes.number).isRequired,
+    dispatch: PropTypes.func.isRequired,
 }
 
 export default Canvas
