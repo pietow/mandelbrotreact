@@ -31,8 +31,8 @@ function juliaSet(xMin, xMax, yMin, yMax, width, height, iterMax) {
             let n = 0
 
             for (; n < iterMax && Tr + Ti <= 4; n += 1) {
-                Zi = 2 * Zi * Zr + 0
-                Zr = Tr - Ti + 0.7885
+                Zi = 2 * Zi * Zr + 0.148
+                Zr = Tr - Ti - 0.744
                 Tr = Zr * Zr
                 Ti = Zi * Zi
             }
@@ -45,6 +45,7 @@ function juliaSet(xMin, xMax, yMin, yMax, width, height, iterMax) {
             if (radius < min) minRad = n
         }
     }
+    console.log(iterations)
     return { iterations, radiusZn, min, max, minRad, maxRad }
 }
 
