@@ -61,10 +61,10 @@ function Canvas() {
     })
 
     return (
-        <div className="flex items-center h-screen">
+        <div className="border-2">
             <canvas
                 ref={CanvasRef}
-                className="border-2 mx-auto border-gray-500"
+                className=" border-gray-500"
                 width="1000"
                 height="1000"
             />
