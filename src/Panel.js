@@ -8,7 +8,7 @@ function Panel({ state, dispatch }) {
             <div className="flex flex-col p-2 items-center">
                 <p className="text-matrix-green mb-2">Intervall for x</p>
                 <input
-                    className="border-2 border-matrix-green rounded m-2 p-1"
+                    className="opacity-50 border-2 border-matrix-green rounded m-2 p-1"
                     type="number"
                     placeholder={state.xMin}
                     onChange={(e) => {
@@ -19,7 +19,7 @@ function Panel({ state, dispatch }) {
                     }}
                 />
                 <input
-                    className="border-2 border-matrix-green rounded m-2 p-1"
+                    className="opacity-50 border-2 border-matrix-green rounded m-2 p-1"
                     type="number"
                     placeholder={state.xMax}
                     onChange={(e) => {
@@ -31,7 +31,7 @@ function Panel({ state, dispatch }) {
                 />
                 <p className="text-matrix-green mb-2">Intervall for y</p>
                 <input
-                    className="border-2 border-matrix-green rounded m-2 p-1"
+                    className="border-2 opacity-50 border-matrix-green rounded m-2 p-1"
                     type="number"
                     placeholder={state.yMin}
                     onChange={(e) => {
@@ -42,7 +42,7 @@ function Panel({ state, dispatch }) {
                     }}
                 />
                 <input
-                    className="border-2 border-matrix-green rounded m-2 p-1"
+                    className="border-2 border-matrix-green opacity-50 rounded m-2 p-1"
                     type="number"
                     placeholder={state.yMax}
                     onChange={(e) => {
@@ -54,7 +54,7 @@ function Panel({ state, dispatch }) {
                 />
                 <p className="text-matrix-green mb-2">Increase crispness</p>
                 <input
-                    className="border-2 border-matrix-green rounded m-2 p-1"
+                    className="border-2 border-matrix-green rounded opacity-50 m-2 p-1"
                     type="number"
                     placeholder={state.iterMax}
                     onChange={(e) => {
