@@ -4,20 +4,22 @@ import convertPxToComplex from './converter'
 
 export const initialState = {
     xMin: -2,
-    xMax: 1,
-    yMin: -1,
-    yMax: 1,
+    xMax: 2,
+    yMin: -2,
+    yMax: 2,
     iterMax: 100,
     width: 1000,
     height: 1000,
     in_xMin: -2,
-    in_xMax: 1,
-    in_yMin: 1,
-    in_yMax: -1,
+    in_xMax: 2,
+    in_yMin: 2,
+    in_yMax: -2,
     in_iterMax: 100,
     in_width: 1000,
     in_height: 1000,
     perPixel: 0,
+    Zr: 0,
+    Zi: 0,
 }
 export function paraReducer(state, action) {
     switch (action.type) {

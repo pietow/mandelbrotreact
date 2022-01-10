@@ -3,91 +3,85 @@
 import React, { useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 /* import mandelbrot from './mandelbrot' */
-import genColor from './genColor'
-import drawPixel from './drawPixel'
-import juliaSet from './juliaSet'
 
-function JuliaCanvas({ state, dispatch }) {
+function JuliaCanvas({ state }) {
     const CanvasRef = useRef(null)
-    const { width, height, xMin, xMax, yMin, yMax, iterMax } = state
+    const canvas = CanvasRef.current
+    const Zr = state.Zr
+    const Zi = state.Zi
 
     useEffect(() => {
-        const canvas = CanvasRef.current
-        const context = canvas.getContext('2d')
-
-        const image = context.createImageData(canvas.width, canvas.height)
-        const { data } = image
-
-        function swapBuffer() {
-            context.putImageData(image, 0, 0)
+        function canvas_to_xy(ij, xmin, xmax, ymin, ymax) {
+            return [
+                ((xmax - xmin) / (canvas.width - 1)) * ij[0] + xmin,
+                ((ymin - ymax) / (canvas.height - 1)) * ij[1] + ymax,
+            ]
         }
+        // Draw the Julia set using an escape time algorithm
 
-        const t1 = new Date()
-
-        const mandelObj = juliaSet(
-            xMin,
-            xMax,
-            yMin,
-            yMax,
-            canvas.width,
-            canvas.height,
-            iterMax,
-        )
-        const { iterations, min, max } = mandelObj
-        const colorTable = genColor(min, max)
-        colorTable[100] = { r: 0, b: 0, g: 0, a: 255 }
-        let index = 0
-        for (let x = 0; x < canvas.width; x += 1) {
-            for (let y = 0; y < canvas.height; y += 1) {
-                drawPixel(
-                    x,
-                    y,
-                    iterations[index++],
-                    colorTable,
-                    data,
-                    canvas.width,
-                )
+        function julia_iteration_count(cre, cim, x0, y0) {
+            let x = x0
+            let y = y0
+            let xtemp
+            let ytemp
+            let cnt = 0
+            while (x * x + y * y <= 4 && cnt++ < 100) {
+                xtemp = x
+                ytemp = y
+                x = xtemp * xtemp - ytemp * ytemp + cre
+                y = 2 * xtemp * ytemp + cim
             }
+            return cnt
         }
 
-        swapBuffer()
+        function draw_julia_set(c) {
+            const xmin = -1.5
+            const xmax = 1.5
+            const ymin = -1.5
+            const ymax = 1.5
+            const bail = 100
+            const context = canvas.getContext('2d')
+            const canvasData = context.createImageData(
+                canvas.width,
+                canvas.height,
+            )
 
-        const t2 = new Date()
-        const dt = t2 - t1
-
-        console.log(`elapsed time = ${dt} ms`)
-    }, [xMin, xMax, yMin, yMax, iterMax])
+            for (let i = 0; i < canvas.width; i++) {
+                for (let j = 0; j < canvas.height; j++) {
+                    const xy = canvas_to_xy([i, j], xmin, xmax, ymin, ymax)
+                    const it_cnt = julia_iteration_count(
+                        c.re,
+                        c.im,
+                        xy[0],
+                        xy[1],
+                    )
+                    const color = 255 - (255 * it_cnt) / (bail + 1)
+                    const idx = (i + j * canvas.width) * 4
+                    canvasData.data[idx + 0] = color
+                    canvasData.data[idx + 1] = color
+                    canvasData.data[idx + 2] = color
+                    canvasData.data[idx + 3] = 255
+                }
+            }
+            context.putImageData(canvasData, 0, 0)
+        }
+        console.log(Zr)
+        const dummy = Zr ? draw_julia_set({ re: Zr, im: Zi }) : null
+    }, [Zr, Zi, canvas])
 
     return (
-        <div className="w-fit border-black relative">
-            <p className="text-matrix-green absolute top-2 inset-x-2/4 w-1/2">
-                {state.Zr
-                    ? `${state.Zr.toFixed(5)} + i * ${state.Zi.toFixed(5)}`
-                    : 'Move cursor over canvas'}
-            </p>
+        <div>
             <canvas
+                className="border-2"
                 ref={CanvasRef}
-                className=" border-gray-500"
-                width={width}
-                height={height}
-                onMouseMove={(e) => {
-                    dispatch({
-                        type: 'get_per_Pixel',
-                    })
-                    dispatch({
-                        type: 'get_coordinates',
-                        x: e.clientX,
-                        y: e.clientY,
-                    })
-                }}
+                height="1000"
+                width="1000"
             />
         </div>
     )
 }
-
 JuliaCanvas.propTypes = {
     state: PropTypes.objectOf(PropTypes.number).isRequired,
-    dispatch: PropTypes.func.isRequired,
 }
 
 export default JuliaCanvas

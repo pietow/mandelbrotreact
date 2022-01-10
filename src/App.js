@@ -10,8 +10,9 @@ import { initialState, paraReducer } from './paraReducer'
 function App() {
     const [state, dispatch] = useReducer(paraReducer, initialState)
     return (
-        <div className="App ">
+        <div className="flex ">
             <Canvas state={state} dispatch={dispatch} />
+            <JuliaCanvas state={state} dispatch={dispatch} />
             <Panel state={state} dispatch={dispatch} />
         </div>
     )
