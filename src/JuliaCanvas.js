@@ -7,8 +7,8 @@ import PropTypes from 'prop-types'
 function JuliaCanvas({ state }) {
     const CanvasRef = useRef(null)
     const canvas = CanvasRef.current
-    const Zr = state.Zr
-    const Zi = state.Zi
+    const Cr = state.Zr
+    const Ci = state.Zi
 
     useEffect(() => {
         function canvas_to_xy(ij, xmin, xmax, ymin, ymax) {
@@ -65,9 +65,9 @@ function JuliaCanvas({ state }) {
             }
             context.putImageData(canvasData, 0, 0)
         }
-        console.log(Zr)
-        const dummy = Zr ? draw_julia_set({ re: Zr, im: Zi }) : null
-    }, [Zr, Zi, canvas])
+        const dummy = Cr ? draw_julia_set({ re: Cr, im: Ci }) : null
+        console.log(dummy)
+    }, [Cr, Ci, canvas])
 
     return (
         <div>
