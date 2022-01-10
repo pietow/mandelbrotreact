@@ -11,6 +11,7 @@ function JuliaCanvas({ state }) {
     const Ci = state.Zi
 
     useEffect(() => {
+        // Taken from A Javascript Julia set generator written by Mark McClure see: https://www.marksmath.org/visualization/julia_sets/
         function canvas_to_xy(ij, xmin, xmax, ymin, ymax) {
             return [
                 ((xmax - xmin) / (canvas.width - 1)) * ij[0] + xmin,
